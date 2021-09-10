@@ -49,7 +49,7 @@ But wait, wat are notes anyway? Simply put, notes are selected frequencys which 
 
 So, to generate samples for all the keys in a piano we just need a [list of all the notes](https://en.wikipedia.org/wiki/Piano_key_frequencies), conviniently I have listed them all in a text file: [noteslist.txt](https://github.com/FinFetChannel/Python_Synth/blob/main/noteslist.txt). Then we just need the frequency of the first note (16.35160 Hz) and the remaining frequencies can be calculated from it.
 
-So, we can easily store a sample for each note in a dictionary. For the keys, we are going to use the caracters in a regular keyboard, after all, that's what we have to play here. The 108 keys can be subdivided into three groups of 36, since your keyboard probably does not have enough keys for all of them.
+So, we can easily store a sample for each note in a dictionary. For the keys, we are going to use the caracters in a regular keyboard, after all, that's what we have to play here. The 108 keys can be subdivided into three groups of 36, since your keyboard probably does not have enough keys for all of them at once.
 
 <details>
   <summary>Generating a sample for each piano key</summary>
@@ -126,6 +126,97 @@ while running:
             notes[key][0].fadeout(100)
     
 pg.quit()
+  
+```
+</details>
+
+Ok, this works, but this black screen is boring, why not put it to good use?
+
+## Displaying notes 
+
+To display the notes on screen first i'm going to define a position and a color for each one. For the positions I've simply arranged all the notes in a grid of 12 by 9, neatly spaced on the screen. For the colors I tryed to mimic a rainbow, where lower sound frequencies are reddish, the middle ones are greenish and the higher ones are blueish. The positions and colors are also stored in the notes dictionary. The notes are then blit into the screen. When playing, the current note gets highlighted with a white color, after the keyup event it returns to its original color. After some ajustments we have a very basic an pretty sound synthetizer.
+
+<details>
+  <summary>Notes display</summary>
+  
+```python  
+  
+...
+  
+import pygame as pg
+import numpy as np
+
+pg.init()
+pg.mixer.init()
+screen = pg.display.set_mode((1280, 720))
+font = pg.font.SysFont("Impact", 48)
+
+def synth(frequency, duration=1.5, sampling_rate=41000):
+    frames = int(duration*sampling_rate)
+    arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
+    sound = np.asarray([32767*arr,32767*arr]).T.astype(np.int16)
+    sound = pg.sndarray.make_sound(sound.copy())
+    
+    return sound
+
+
+keylist = '123456789qwertyuioasdfghjklzxcvbnm,.'
+notes_file = open("noteslist.txt")
+file_contents = notes_file.read()
+notes_file.close()
+noteslist = file_contents.splitlines()
+
+keymod = '0-='
+notes = {} # dict to store samples
+freq = 16.3516 # start frequency
+posx, posy = 25, 25 #start position
+
+
+for i in range(len(noteslist)):
+    mod = int(i/36)
+    key = keylist[i-mod*36]+str(mod) 
+    sample = synth(freq)
+    color = np.array([np.sin(i/25+1.7)*130+125,np.sin(i/30-0.21)*215+40, np.sin(i/25+3.7)*130+125])
+    color = np.clip(color, 0, 255)
+    notes[key] = [sample, noteslist[i], freq, (posx, posy), 255*color/max(color)]
+    notes[key][0].set_volume(0.33)
+    notes[key][0].play()
+    notes[key][0].fadeout(100)
+    freq = freq * 2 ** (1/12)
+    posx = posx + 140
+    if posx > 1220:
+        posx, posy = 25, posy+56
+        
+    screen.blit(font.render(notes[key][1], 0, notes[key][4]), notes[key][3])
+    pg.display.update()
+    
+
+running = 1
+mod = 1
+pg.display.set_caption("FinFET Synth - Change range: 0 - = // Play with keys: "+keylist )
+
+while running:
+    for event in pg.event.get():
+        if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            running = False
+        if event.type == pg.KEYDOWN:
+            key = str(event.unicode)
+            if key in keymod:
+                mod = keymod.index(str(event.unicode))
+            elif key in keylist:
+                key = key+str(mod)
+                notes[key][0].play()
+                screen.blit(font.render(notes[key][1], 0, (255,255,255)), notes[key][3])
+        if event.type == pg.KEYUP and str(event.unicode) != '' and str(event.unicode) in keylist:
+            key = str(event.unicode)+str(mod)
+            notes[key][0].fadeout(100)
+            screen.blit(font.render(notes[key][1], 0, notes[key][4]), notes[key][3])
+
+    pg.display.update()
+
+pg.mixer.quit()
+pg.quit()
+
   
 ```
 </details>
