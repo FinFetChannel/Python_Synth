@@ -91,6 +91,7 @@ for i in range(len(noteslist)):
     pg.time.wait(100)
     freq = freq * 2 ** (1/12)
     
+pg.mixer.quit()
 pg.quit()
   
 ```
@@ -124,7 +125,8 @@ while running:
         if event.type == pg.KEYUP and str(event.unicode) != '' and str(event.unicode) in keylist:
             key = str(event.unicode)+str(mod)
             notes[key][0].fadeout(100)
-    
+
+pg.mixer.quit()    
 pg.quit()
   
 ```
