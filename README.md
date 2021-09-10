@@ -1,5 +1,8 @@
 # Python_Synth
 A simple synthetizer made with Pygame and Numpy in Python.
+
+![Screenshot]("python synth.png")
+
 ## What is a soundwave
 Soundwaves are pressure fluctuations which travel trough the air (or other physical medium) and hit your eardrums. We can generate these waves with a speaker, which usually consists of a dyaphragm wuth an electrical coil attached and a permanent magnet. When an electrical signal passed through the coil it vibrates the diaphragm and which in turn moves the air around it creating soundwaves.
 
