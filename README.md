@@ -3,7 +3,8 @@ A simple synthesizer made with Pygame and Numpy in Python.
 
 ![Screenshot](python%20synth.png)
 
-## What is a soundwave
+## A simple keyboard synthesizer
+### What is a soundwave
 Soundwaves are pressure fluctuations which travel trough the air (or other physical medium) and hit your eardrums. We can generate these waves with a speaker, which usually consists of a diaphragm with an electrical coil attached and a permanent magnet. When an electrical signal passes through the coil, it vibrates the diaphragm, which in turn moves the air around it creating soundwaves.
 
 The electrical signal consists of an alternating current, usually created by a DAC - Digital Analog Converter and amplified bya a amplifier. Before that, the signal is digital, consisting of ones and zeros in your computer.
@@ -46,7 +47,7 @@ sound.play()
 
 Great! Now we can do the same for all the notes in a piano keyboard.
 
-## Generating samples for every key in a piano
+### Generating samples for every key in a piano
 
 But wait, wat are notes anyway? Simply put, notes are selected frequencies which often sound nice when played together. This may sound a bit weird, but the exact frequencies aren't that important, what matters most are the ratios between them. The most used ratio in western music is the [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
 
@@ -100,7 +101,7 @@ pg.quit()
 ```
 </details>
 
-## Playing with the keyboard
+### Playing with the keyboard
 
 Now that we have all the samples we can start playing and try to make some music. For that we need to create a pygame window, so we can capture the keystrokes and play the corresponding samples. A note starts playing when a keydown event is registered and stops after the duration of the sample or when a keyup event is registered. The range of notes can be changed with the keys 0 - =
 
@@ -137,7 +138,7 @@ pg.quit()
 
 Ok, this works, but this black screen is boring, why not put it to good use?
 
-## Displaying notes 
+### Displaying notes 
 
 To display the notes on screen first i'm going to define a position and a color for each one. For the positions I've simply arranged all the notes in a grid of 12 by 9, neatly spaced on the screen. For the colors I tried to mimic a rainbow, where lower sound frequencies are reddish, the middle ones are greenish and the higher ones are blueish. The positions and colors are also stored in the notes dictionary. The notes are then blit into the screen. When playing, the current note gets highlighted with a white color, after the keyup event it returns to its original color. After some adjustments we have a very basic and somewhat pretty sound synthesizer.
 
