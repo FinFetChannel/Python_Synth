@@ -11,7 +11,7 @@ The electrical signal consists of an alternating current, usually created by a D
 
 And what does this digital signal look like? Basically, it is a long list of numbers.
 
-## Generating a digital signal
+### Generating a digital signal
 The first thing we should consider when generating a digital signal is the sampling rate, that is, how many values we need to define for a second of sound. The default value for the Pygame mixer is 41000 samples per second, so that's what I'll be using.
 
 The second thing is the form of the wave, responsible for the quality of the sound, or timbre, the reason why different instruments sound so dissimilar for the same frequency or pitch. The most pure waveform is the sine, also one of the easiest to generate in numpy, but the are innumerous other types, like square, triangular and sawtooth.
@@ -226,3 +226,9 @@ pg.quit()
   
 ```
 </details>
+
+Cool, now with this simple keyboard synthesizer we can start making some music (or at least try), but the sine wave sound is a bit dull. We can explore other waveforms for different timbres.
+
+### Making "square" and "triangular" waves
+
+There are [proper ways](https://docs.scipy.org/doc/scipy/reference/signal.html#waveforms) to generate square and triangular waves but, for this project, I came up with some simple hacks to obtain (approximate) these types of waveforms.
