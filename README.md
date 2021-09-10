@@ -24,7 +24,6 @@ To hear it, first we have to turn it into a pygame sound array, which first has 
   <summary>Generating the first sound sample</summary>
   
 ```python
-  
 import pygame as pg
 import numpy as np
 
@@ -53,10 +52,9 @@ So, to generate samples for all the keys in a piano we just need a [list of all 
 So, we can easily store a sample for each note in a dictionary. For the keys, we are going to use the caracters in a regular keyboard, after all, that's what we have to play here. The 108 keys can be subdivided into three groups of 36, since your keyboard probably does not have enough keys for all of them.
 
 <details>
-  <summary>Generating the first sound sample</summary>
+  <summary>Generating a sample for each piano key</summary>
   
-```python
-  
+```python  
 import pygame as pg
 import numpy as np
 
