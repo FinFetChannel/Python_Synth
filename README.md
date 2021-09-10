@@ -22,7 +22,9 @@ To hear it, first we have to turn it into a pygame sound array, which first has 
 
 <details>
   <summary>Generating the first sound sample</summary>
+  
 ```python
+  
 import pygame as pg
 import numpy as np
 
@@ -52,7 +54,9 @@ So, we can easily store a sample for each note in a dictionary. For the keys, we
 
 <details>
   <summary>Generating the first sound sample</summary>
+  
 ```python
+  
 import pygame as pg
 import numpy as np
 
@@ -90,5 +94,6 @@ for i in range(len(noteslist)):
     freq = freq * 2 ** (1/12)
     
 pg.quit()
+  
 ```
 </details>
