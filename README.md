@@ -232,3 +232,25 @@ Cool, now with this simple keyboard synthesizer we can start making some music (
 ### Making "square" and "triangular" waves
 
 There are [proper ways](https://docs.scipy.org/doc/scipy/reference/signal.html#waveforms) to generate square and triangular waves but, for this project, I came up with some simple hacks to obtain (approximate) these types of waveforms.
+
+Te square wave can be aproximated easily by multiplying the sine wave by a "big" factor, 10 already looks squarish to me, and clipping the result to the -1 to 1 range. I know, it's more like a trapezoidal wave, but it is close.
+Triangular waves can be built on top of the square waves with integration, this os done with the `np.cumsum` function in Numpy, after that we only need to scale it back to the -1 to 1 range. This method works more less fine for short samples but cumulative errors may creep in for longer ones.
+
+<details>
+  <summary>Notes display</summary>
+  
+```python 
+  
+def synth(frequency, duration=1.5, sampling_rate=41000):
+    frames = int(duration*sampling_rate)
+    arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
+##    arr = np.clip(arr*10, -1, 1) # squarish waves
+    arr = np.cumsum(np.clip(arr*10, -1, 1)) # triangularish waves pt1
+    arr = arr/max(np.abs(arr)) # triangularish waves pt1
+    sound = np.asarray([32767*arr,32767*arr]).T.astype(np.int16)
+    sound = pg.sndarray.make_sound(sound.copy())
+    
+    return sound
+  
+```
+</details>  
