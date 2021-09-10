@@ -139,7 +139,7 @@ Ok, this works, but this black screen is boring, why not put it to good use?
 
 ## Displaying notes 
 
-To display the notes on screen first i'm going to define a position and a color for each one. For the positions I've simply arranged all the notes in a grid of 12 by 9, neatly spaced on the screen. For the colors I tryed to mimic a rainbow, where lower sound frequencies are reddish, the middle ones are greenish and the higher ones are blueish. The positions and colors are also stored in the notes dictionary. The notes are then blit into the screen. When playing, the current note gets highlighted with a white color, after the keyup event it returns to its original color. After some ajustments we have a very basic an pretty sound synthetizer.
+To display the notes on screen first i'm going to define a position and a color for each one. For the positions I've simply arranged all the notes in a grid of 12 by 9, neatly spaced on the screen. For the colors I tryed to mimic a rainbow, where lower sound frequencies are reddish, the middle ones are greenish and the higher ones are blueish. The positions and colors are also stored in the notes dictionary. The notes are then blit into the screen. When playing, the current note gets highlighted with a white color, after the keyup event it returns to its original color. After some ajustments we have a very basic and somewhat pretty sound synthetizer.
 
 <details>
   <summary>Notes display</summary>
