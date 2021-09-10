@@ -237,9 +237,10 @@ Te square wave can be aproximated easily by multiplying the sine wave by a "big"
 Triangular waves can be built on top of the square waves with integration, this os done with the `np.cumsum` function in Numpy, after that we only need to scale it back to the -1 to 1 range. This method works more less fine for short samples but cumulative errors may creep in for longer ones.
 
 <details>
-  <summary>Notes display</summary>
+  <summary>Squarish and triangularish waves </summary>
   
 ```python 
+...
   
 def synth(frequency, duration=1.5, sampling_rate=41000):
     frames = int(duration*sampling_rate)
@@ -251,6 +252,8 @@ def synth(frequency, duration=1.5, sampling_rate=41000):
     sound = pg.sndarray.make_sound(sound.copy())
     
     return sound
+ 
+...
   
 ```
 </details>  
