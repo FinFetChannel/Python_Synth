@@ -98,7 +98,7 @@ pg.quit()
 
 ## Playing with the keyboard
 
-Now that we have all the samples we can start playing and try to make some music. For that we need to create a pygame window, so we can capture the keystrokes an play the corresponding samples.
+Now that we have all the samples we can start playing and try to make some music. For that we need to create a pygame window, so we can capture the keystrokes an play the corresponding samples. A note starts playing when a keydown event is registered and stops after the duration of the sample or when a keyup event is registered. The range of notes can be changed with the keys 0 - =
 
 <details>
   <summary>Keyboard inputs</summary>
