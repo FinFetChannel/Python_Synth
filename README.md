@@ -256,4 +256,10 @@ def synth(frequency, duration=1.5, sampling_rate=41000):
 ...
   
 ```
-</details>  
+</details>
+
+We could go wild and try to come up with more interesting wave forms, for example, adding up multiples of the base frequency, we can have interesting results and theoretically mimic the timbre of any instrument.
+
+## Replay a sound sequency
+
+
