@@ -104,42 +104,9 @@ Now that we have all the samples we can start playing and try to make some music
   <summary>Keyboard inputs</summary>
   
 ```python  
-import pygame as pg
-import numpy as np
-
-pg.init()
-pg.mixer.init()
-
-def synth(frequency, duration=1.5, sampling_rate=41000):
-    frames = int(duration*sampling_rate)
-    arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
-    sound = np.asarray([32767*arr,32767*arr]).T.astype(np.int16)
-    sound = pg.sndarray.make_sound(sound.copy())
-    
-    return sound
-
-
-keylist = '123456789qwertyuioasdfghjklzxcvbnm,.'
-notes_file = open("noteslist.txt")
-file_contents = notes_file.read()
-notes_file.close()
-noteslist = file_contents.splitlines()
-
-keymod = '0-='
-notes = {} # dict to store samples
-freq = 16.3516 # start frequency
-
-for i in range(len(noteslist)):
-    mod = int(i/36)
-    key = keylist[i-mod*36]+str(mod) 
-    sample = synth(freq)
-    notes[key] = [sample, noteslist[i], freq]
-    notes[key][0].set_volume(0.33)
-    notes[key][0].play()
-    notes[key][0].fadeout(100)
-##    pg.time.wait(100)
-    freq = freq * 2 ** (1/12)
-
+  
+...
+  
 screen = pg.display.set_mode((1280, 720))
 running = 1
 
