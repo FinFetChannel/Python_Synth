@@ -314,10 +314,10 @@ The final result is a text file with all notes that were played, when they start
 
 ### Replay txt sound sequence
 
-To replay the sound sequency I think it's better to start a new script, but we can borrow most of it from the previous one. The main difference here is that there are no keypresses, instead the program waits until the time for the new note to be played.
+To replay the sound sequency I think it's better to start a new script, but we can borrow most of it from the previous one. The main difference here is that there are no real keypresses, instead the program waits until the time for the new note to be played, so the keys in the notes dictionary are the notes themselves.
 
 <details>
-  <summary>Export text file </summary>
+  <summary>Replay text file </summary>
   
 ```python
 import pygame as pg
@@ -394,3 +394,5 @@ pg.time.wait(500)
 pg.quit()  
 ```
 </details>
+
+This script allows us to create and fine tune sound sequencies manually in a text editor, I've tried out something like that with part of the [Super Mario theme song](https://github.com/FinFetChannel/Python_Synth/blob/main/SuperMario.txt).
