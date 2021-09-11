@@ -314,7 +314,7 @@ The final result is a text file with all notes that were played, when they start
 
 ### Replay txt sound sequence
 
-To replay the sound sequency I think it's better to start a new script, but we can borrow most of it from the previous one. The main difference here is that there are no real keypresses, instead the program waits until the time for the new note to be played, so the keys in the notes dictionary are the notes themselves.
+To replay the sound sequency I think it's better to start a new script, but we can borrow most of it from the previous one. The main difference here is that there are no real keypresses, instead the program waits until the time for the new note to be played, so the keys in the notes dictionary are the notes themselves. This makes more sense for creating a music, the actual keyboard keys are not relevant.
 
 <details>
   <summary>Replay text file </summary>
@@ -396,3 +396,100 @@ pg.quit()
 </details>
 
 This script allows us to create and fine tune sound sequencies manually in a text editor, I've tried out something like that with part of the [Super Mario theme song](https://github.com/FinFetChannel/Python_Synth/blob/main/SuperMario.txt).
+
+### Creating actual sound tracks
+
+The previous script allows us to replay a sound sequency, but with all thos waits it is not practical to integrate it into something like a game. Instead of playing note by note, we can generate an array with all the samples we need and play it at once or even save it to wav file. 
+
+Before we start, we need to make some adjustments to the synth function. First, we add a fade to each sample (to replicate the fadeout used on keyup events) with a length of 0.1 s, so, no notes shorter than that are allowed here. Also, we don't need to turn the array into a sound but to a list, because it is easier to add new sample to the end of the track.
+
+<details>
+  <summary>Track synth </summary>
+  
+```python
+import pygame as pg
+import numpy as np
+  
+def synth2(frequency, duration=1.5, sampling_rate=41000):
+    frames = int(duration*sampling_rate)
+    arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
+##    arr = arr + np.cos(4*np.pi*frequency*np.linspace(0,duration, frames))
+##    arr = arr + np.cos(6*np.pi*frequency*np.linspace(0,duration, frames))
+    arr = np.clip(arr*10, -1, 1) # squarish waves
+##    arr = np.cumsum(np.clip(arr*10, -1, 1)) # triangularish waves pt1
+##    arr = arr+np.sin(2*np.pi*frequency*np.linspace(0,duration, frames)) # triangularish waves pt1
+##    arr = arr/max(np.abs(arr)) # adjust to -1, 1 range
+    fade = list(np.ones(frames-4100))+list(np.linspace(1, 0, 4100))
+    arr = np.multiply(arr, np.asarray(fade))
+    return list(arr)
+```
+</details>
+
+The notes dictionary is much more simpler this time, as we are only concerned about the frequency of each note.
+
+<details>
+  <summary>Notes dictionary for tracks </summary>
+  
+```python
+pg.init()
+pg.mixer.init()
+
+a_file = open("noteslist.txt")
+file_contents = a_file.read(); a_file.close()
+noteslist = file_contents.splitlines()
+freq = 16.3516 #starting frequency
+freqs = {}
+
+for note in noteslist:
+    freqs[note]= freq
+    freq = freq * 2 ** (1/12)
+...
+```
+</details>
+
+After that we go through all notes in the sound sequence and generate a sample for each one of them to add to a list. The samples are extended while the breaks are reduced by 0.1 seconds to account for the fadeouts. At the end the list is turned back into an array and into a pygame sound. A wait of the length of the sound is added to ensure it is played to the end.
+
+<details>
+  <summary>Create track from txt </summary>
+  
+```python
+...
+with open("SuperMario.txt", "r") as file:
+    notes = [eval(line.rstrip()) for line in file]
+file.close()
+
+track = []
+for i in range(int(len(notes)/2)):
+    track = track + list(np.zeros(max(0, int(44.1*(notes[i*2][2]-100)))))
+    track = track + synth(freqs[notes[i*2][1]], 1e-3*(notes[i*2+1][2]+100))
+   
+arr = 32767*np.asarray(track)*0.5 # reduce volume by half
+sound = np.asarray([arr,arr]).T.astype(np.int16)
+sound = pg.sndarray.make_sound(sound.copy())
+
+sound.play()
+pg.time.wait(int(len(arr)/44.1))
+...
+```
+</details>
+Finally, we can export the track as a wav file, using the wave library.
+<details>
+  <summary>Export wav file </summary>
+  
+```python
+...
+import wave
+  
+sfile = wave.open('mario.wav', 'w')
+sfile.setframerate(44100)
+sfile.setnchannels(2)
+sfile.setsampwidth(2)
+sfile.writeframesraw(sound)
+sfile.close()
+
+pg.mixer.quit()
+pg.quit()    
+```
+</details>
+
+And we are done! The only limitation in this approach is that there are no overlapping notes in a single track (we could, but it is messy), but we can always generate multiple tracks and combine them (to add two arrays they need to have the same length though).
