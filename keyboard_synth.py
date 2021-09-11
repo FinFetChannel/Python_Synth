@@ -9,8 +9,8 @@ font = pg.font.SysFont("Impact", 48)
 def synth(frequency, duration=1.5, sampling_rate=41000):
     frames = int(duration*sampling_rate)
     arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
-    arr = arr + np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
-    arr = arr - np.cos(3*np.pi*frequency*np.linspace(0,duration, frames))
+    arr = arr + np.cos(4*np.pi*frequency*np.linspace(0,duration, frames))
+    arr = arr - np.cos(6*np.pi*frequency*np.linspace(0,duration, frames))
 ##    arr = np.clip(arr*10, -1, 1) # squarish waves
 ##    arr = np.cumsum(np.clip(arr*10, -1, 1)) # triangularish waves pt1
 ##    arr = arr+np.sin(2*np.pi*frequency*np.linspace(0,duration, frames)) # triangularish waves pt1
