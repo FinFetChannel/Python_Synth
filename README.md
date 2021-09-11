@@ -240,8 +240,7 @@ Triangular waves can be built on top of the square waves with integration, this 
   <summary>Squarish and triangularish waves </summary>
   
 ```python 
-...
-  
+...  
 def synth(frequency, duration=1.5, sampling_rate=41000):
     frames = int(duration*sampling_rate)
     arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
@@ -252,9 +251,7 @@ def synth(frequency, duration=1.5, sampling_rate=41000):
     sound = pg.sndarray.make_sound(sound.copy())
     
     return sound
- 
 ...
-  
 ```
 </details>
 
@@ -264,5 +261,51 @@ We could go wild and try to come up with more interesting wave forms, for exampl
 
 Now we are able to play any music, not me, I don't have this talent, but maybe after some practice, who knows. But what if we managed to play an epyc sequence, how can we save it for eternity?
 
+Well, we can always use a recording app like audacity, using the PC speaker as its input source, but this only preserves the resulting sound, not exactly the notes which were played.
 
+### Exporting to a text file
 
+There is a better way: store all the relevant keydown and keyup events in a list and later save them to text file. But music is not just a sequence of notes, timing is arguably as important as the notes being played, this is why we also store timestamps for each event. Before saving them to a text file, it's interesting to turn the timestamps into time intervals, which are easier to handle in playback. Te type of the event is also stored as a binary value.
+
+<details>
+  <summary>Export text file </summary>
+  
+```python 
+...
+keypresses = []
+while running:
+    for event in pg.event.get():
+        if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            running = False
+        if event.type == pg.KEYDOWN:
+            key = str(event.unicode)
+            if key in keymod:
+                mod = keymod.index(str(event.unicode))
+            elif key in keylist:
+                key = key+str(mod)
+                notes[key][0].play()
+                keypresses.append([1, notes[key][1], pg.time.get_ticks()])
+                screen.blit(font.render(notes[key][1], 0, (255,255,255)), notes[key][3])
+        if event.type == pg.KEYUP and str(event.unicode) != '' and str(event.unicode) in keylist:
+            key = str(event.unicode)+str(mod)
+            notes[key][0].fadeout(100)
+            keypresses.append([0, notes[key][1], pg.time.get_ticks()])
+            screen.blit(font.render(notes[key][1], 0, notes[key][4]), notes[key][3])
+
+    pg.display.update()
+
+pg.display.set_caption("Exportingsound sequence")
+if len(keypresses) > 1:
+    for i in range(len(keypresses)-1):
+        keypresses[-i-1][2] = keypresses[-i-1][2] - keypresses[-i-2][2]
+    keypresses[0][2] = 0 # first at zero
+
+    with open("soundsequence.txt", "w") as file:
+        for i in range(len(keypresses)):
+            file.write(str(keypresses[i])+'\n') # separate lines for readability
+    file.close()
+    
+pg.mixer.quit()
+pg.quit()
+```
+</details>
