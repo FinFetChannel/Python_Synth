@@ -247,7 +247,7 @@ def synth(frequency, duration=1.5, sampling_rate=41000):
     arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
 ##    arr = np.clip(arr*10, -1, 1) # squarish waves
     arr = np.cumsum(np.clip(arr*10, -1, 1)) # triangularish waves pt1
-    arr = arr/max(np.abs(arr)) # triangularish waves pt1
+    arr = arr/max(np.abs(arr)) # triangularish waves pt2
     sound = np.asarray([32767*arr,32767*arr]).T.astype(np.int16)
     sound = pg.sndarray.make_sound(sound.copy())
     
@@ -261,5 +261,8 @@ def synth(frequency, duration=1.5, sampling_rate=41000):
 We could go wild and try to come up with more interesting wave forms, for example, adding up multiples of the base frequency, we can have interesting results and theoretically mimic the timbre of any instrument.
 
 ## Replay a sound sequency
+
+Now we are able to play any music, not me, I don't have this talent, but maybe after some practice, who knows. But what if we managed to play an epyc sequence, how can we save it for eternity?
+
 
 
