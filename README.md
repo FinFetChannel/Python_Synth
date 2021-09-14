@@ -34,7 +34,7 @@ import numpy as np
 pg.init()
 pg.mixer.init()
 
-sampling_rate = 41000 # default value for the pygame mixer
+sampling_rate = 44100 # default value for the pygame mixer
 frequency = 440 # [Hz]
 duration = 1.5 # [s]
 frames = int(duration*sampling_rate)
