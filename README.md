@@ -12,7 +12,7 @@ The electrical signal consists of an alternating current, usually created by a D
 And what does this digital signal look like? Basically, it is a long list of numbers.
 
 ### Generating a digital signal
-The first thing we should consider when generating a digital signal is the sampling rate, that is, how many values we need to define for a second of sound. The default value for the Pygame mixer is 41000 samples per second, so that's what I'll be using.
+The first thing we should consider when generating a digital signal is the sampling rate, that is, how many values we need to define for a second of sound. The default value for the Pygame mixer is 44100 samples per second, so that's what I'll be using.
 
 The second thing is the form of the wave, responsible for the quality of the sound, or timbre, the reason why different instruments sound so dissimilar for the same frequency or pitch. The most pure waveform is the sine, also one of the easiest to generate in numpy, but the are innumerous other types, like square, triangular and sawtooth.
 
