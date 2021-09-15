@@ -1,7 +1,7 @@
 import pygame as pg
 import numpy as np
 
-def synth(frequency, duration=1.5, sampling_rate=41000):
+def synth(frequency, duration=1.5, sampling_rate=44100):
     frames = int(duration*sampling_rate)
     arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
 ##    arr = arr + np.cos(4*np.pi*frequency*np.linspace(0,duration, frames)) # organ like
@@ -10,7 +10,7 @@ def synth(frequency, duration=1.5, sampling_rate=41000):
 ##    arr = np.cumsum(np.clip(arr*10, -1, 1)) # triangularish waves pt1
 ##    arr = arr+np.sin(2*np.pi*frequency*np.linspace(0,duration, frames)) # triangularish waves pt1
 ##    arr = arr/max(np.abs(arr)) # adjust to -1, 1 range
-    fade = list(np.ones(frames-4100))+list(np.linspace(1, 0, 4100))
+    fade = list(np.ones(frames-4410))+list(np.linspace(1, 0, 4410))
     arr = np.multiply(arr, np.asarray(fade))
     return list(arr)
 
