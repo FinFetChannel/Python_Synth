@@ -6,7 +6,7 @@ pg.mixer.init()
 screen = pg.display.set_mode((1280, 720))
 font = pg.font.SysFont("Impact", 48)
 
-def synth(frequency, duration=1.5, sampling_rate=41000):
+def synth(frequency, duration=1.5, sampling_rate=44100):
     frames = int(duration*sampling_rate)
     arr = np.cos(2*np.pi*frequency*np.linspace(0,duration, frames))
     arr = arr + np.cos(4*np.pi*frequency*np.linspace(0,duration, frames))
